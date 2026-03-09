@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import Sidebar from '@/components/Sidebar';
 import { format, isPast, isToday, isTomorrow } from 'date-fns';
+import { localDateTimeToISO, isoToLocalDateTime } from '@/utils/dateTime';
 
 export default function RemindersPage() {
   const [reminders, setReminders] = useState([]);
@@ -46,13 +47,20 @@ export default function RemindersPage() {
     e.preventDefault();
     try {
       const token = localStorage.getItem('token');
+      
+      // Convert local datetime to ISO for storage
+      const reminderData = {
+        ...formData,
+        dateTime: localDateTimeToISO(formData.dateTime),
+      };
+      
       const res = await fetch('/api/reminders', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(reminderData),
       });
 
       if (res.ok) {

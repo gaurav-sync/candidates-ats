@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Sidebar from '@/components/Sidebar';
 import { format } from 'date-fns';
+import { localDateTimeToISO } from '@/utils/dateTime';
 
 export default function JobDetailPage() {
   const params = useParams();
@@ -79,13 +80,21 @@ export default function JobDetailPage() {
     e.preventDefault();
     try {
       const token = localStorage.getItem('token');
+      
+      // Convert local datetime to ISO for storage
+      const reminderData = {
+        ...reminderForm,
+        dateTime: localDateTimeToISO(reminderForm.dateTime),
+        jobId: params.id,
+      };
+      
       const res = await fetch('/api/reminders', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ ...reminderForm, jobId: params.id }),
+        body: JSON.stringify(reminderData),
       });
 
       if (res.ok) {
