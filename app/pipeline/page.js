@@ -122,10 +122,12 @@ export default function PipelinePage() {
       const jobsData = await jobsRes.json();
       const stagesData = await stagesRes.json();
 
-      setJobs(jobsData);
-      setStages(stagesData);
+      setJobs(Array.isArray(jobsData) ? jobsData : []);
+      setStages(Array.isArray(stagesData) ? stagesData : []);
     } catch (error) {
       console.error('Failed to fetch data:', error);
+      setJobs([]);
+      setStages([]);
     } finally {
       setLoading(false);
     }

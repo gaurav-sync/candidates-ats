@@ -1,10 +1,12 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import Sidebar from '@/components/Sidebar';
 import { format, isToday, isTomorrow, isPast } from 'date-fns';
 
 export default function DashboardPage() {
+  const router = useRouter();
   const [stats, setStats] = useState({
     totalJobs: 0,
     stageBreakdown: [],
@@ -20,6 +22,13 @@ export default function DashboardPage() {
   const fetchDashboardData = async () => {
     try {
       const token = localStorage.getItem('token');
+      
+      if (!token) {
+        console.error('No token found, redirecting to login');
+        router.push('/login');
+        return;
+      }
+      
       const headers = { Authorization: `Bearer ${token}` };
 
       const [jobsRes, stagesRes, remindersRes] = await Promise.all([
@@ -28,27 +37,61 @@ export default function DashboardPage() {
         fetch('/api/reminders', { headers }),
       ]);
 
+      // Check for authentication errors
+      if (!jobsRes.ok || !stagesRes.ok || !remindersRes.ok) {
+        console.error('API request failed:', {
+          jobs: jobsRes.status,
+          stages: stagesRes.status,
+          reminders: remindersRes.status,
+        });
+        
+        if (jobsRes.status === 401 || stagesRes.status === 401 || remindersRes.status === 401) {
+          localStorage.removeItem('token');
+          localStorage.removeItem('user');
+          router.push('/login');
+          return;
+        }
+      }
+
       const jobs = await jobsRes.json();
       const stages = await stagesRes.json();
       const reminders = await remindersRes.json();
 
-      const stageBreakdown = stages.map((stage) => ({
+      console.log('Dashboard data:', { jobs, stages, reminders });
+
+      // Ensure we have arrays, not error objects
+      const jobsArray = Array.isArray(jobs) ? jobs : [];
+      const stagesArray = Array.isArray(stages) ? stages : [];
+      const remindersArray = Array.isArray(reminders) ? reminders : [];
+
+      if (!Array.isArray(stages)) {
+        console.error('Stages is not an array:', stages);
+      }
+
+      const stageBreakdown = stagesArray.map((stage) => ({
         ...stage,
-        count: jobs.filter((job) => job.stageId._id === stage._id).length,
+        count: jobsArray.filter((job) => job.stageId?._id === stage._id).length,
       }));
 
-      const upcomingReminders = reminders
+      const upcomingReminders = remindersArray
         .filter((r) => !r.completed && new Date(r.dateTime) > new Date())
         .slice(0, 5);
 
       setStats({
-        totalJobs: jobs.length,
+        totalJobs: jobsArray.length,
         stageBreakdown,
         upcomingReminders,
-        recentJobs: jobs.slice(0, 5),
+        recentJobs: jobsArray.slice(0, 5),
       });
     } catch (error) {
       console.error('Failed to fetch dashboard data:', error);
+      // Set empty state on error
+      setStats({
+        totalJobs: 0,
+        stageBreakdown: [],
+        upcomingReminders: [],
+        recentJobs: [],
+      });
     } finally {
       setLoading(false);
     }

@@ -42,13 +42,15 @@ export default function JobsPage() {
       const jobsData = await jobsRes.json();
       const stagesData = await stagesRes.json();
 
-      setJobs(jobsData);
-      setStages(stagesData);
-      if (stagesData.length > 0) {
+      setJobs(Array.isArray(jobsData) ? jobsData : []);
+      setStages(Array.isArray(stagesData) ? stagesData : []);
+      if (stagesData.length > 0 && Array.isArray(stagesData)) {
         setFormData((prev) => ({ ...prev, stageId: stagesData[0]._id }));
       }
     } catch (error) {
       console.error('Failed to fetch data:', error);
+      setJobs([]);
+      setStages([]);
     } finally {
       setLoading(false);
     }

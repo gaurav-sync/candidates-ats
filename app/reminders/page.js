@@ -24,6 +24,12 @@ export default function RemindersPage() {
   const fetchData = async () => {
     try {
       const token = localStorage.getItem('token');
+      
+      if (!token) {
+        console.error('No token found');
+        return;
+      }
+      
       const headers = { Authorization: `Bearer ${token}` };
 
       const [remindersRes, jobsRes] = await Promise.all([
@@ -34,10 +40,13 @@ export default function RemindersPage() {
       const remindersData = await remindersRes.json();
       const jobsData = await jobsRes.json();
 
-      setReminders(remindersData);
-      setJobs(jobsData);
+      // Ensure we have arrays, not error objects
+      setReminders(Array.isArray(remindersData) ? remindersData : []);
+      setJobs(Array.isArray(jobsData) ? jobsData : []);
     } catch (error) {
       console.error('Failed to fetch data:', error);
+      setReminders([]);
+      setJobs([]);
     } finally {
       setLoading(false);
     }

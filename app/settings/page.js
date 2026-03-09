@@ -24,9 +24,10 @@ export default function SettingsPage() {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();
-      setStages(data);
+      setStages(Array.isArray(data) ? data : []);
     } catch (error) {
       console.error('Failed to fetch stages:', error);
+      setStages([]);
     } finally {
       setLoading(false);
     }

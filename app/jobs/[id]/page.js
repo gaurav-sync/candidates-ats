@@ -46,10 +46,12 @@ export default function JobDetailPage() {
       const remindersData = await remindersRes.json();
 
       setJob(jobData);
-      setStages(stagesData);
-      setReminders(remindersData);
+      setStages(Array.isArray(stagesData) ? stagesData : []);
+      setReminders(Array.isArray(remindersData) ? remindersData : []);
     } catch (error) {
       console.error('Failed to fetch data:', error);
+      setStages([]);
+      setReminders([]);
     } finally {
       setLoading(false);
     }
