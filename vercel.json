@@ -1,5 +1,6 @@
 {
-  "crons": [
+  "_comment": "Hobby accounts are limited to cron jobs that run once per day. Cron expressions that would run more frequently will fail during deployment.",
+  "_crons_disabled": [
     {
       "path": "/api/reminders/check",
       "schedule": "*/5 * * * *"
