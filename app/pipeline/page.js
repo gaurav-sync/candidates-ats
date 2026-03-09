@@ -39,10 +39,10 @@ function JobCard({ job, isDragging }) {
       style={style}
       {...attributes}
       {...listeners}
-      className="bg-white p-4 rounded-lg shadow-sm border border-gray-200 cursor-move hover:shadow-md transition-shadow"
+      className="bg-white p-3 sm:p-4 rounded-lg shadow-sm border border-gray-200 cursor-move hover:shadow-md transition-shadow touch-manipulation"
     >
-      <h3 className="font-semibold text-gray-900">{job.company}</h3>
-      <p className="text-sm text-gray-600 mt-1">{job.role}</p>
+      <h3 className="font-semibold text-gray-900 text-sm sm:text-base">{job.company}</h3>
+      <p className="text-xs sm:text-sm text-gray-600 mt-1">{job.role}</p>
       {job.location && (
         <p className="text-xs text-gray-500 mt-2">📍 {job.location}</p>
       )}
@@ -63,17 +63,17 @@ function StageColumn({ stage, jobs }) {
   return (
     <div
       ref={setNodeRef}
-      className="bg-gray-100 rounded-xl p-4 min-w-[300px] max-w-[300px]"
+      className="bg-gray-100 rounded-xl p-3 sm:p-4 min-w-[280px] sm:min-w-[300px] max-w-[280px] sm:max-w-[300px]"
     >
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex items-center justify-between mb-3 sm:mb-4">
         <div className="flex items-center gap-2">
           <div
-            className="w-3 h-3 rounded-full"
+            className="w-3 h-3 rounded-full flex-shrink-0"
             style={{ backgroundColor: stage.color }}
           />
-          <h2 className="font-bold text-gray-900">{stage.name}</h2>
+          <h2 className="font-bold text-gray-900 text-sm sm:text-base">{stage.name}</h2>
         </div>
-        <span className="bg-gray-200 text-gray-700 text-sm px-2 py-1 rounded-full">
+        <span className="bg-gray-200 text-gray-700 text-xs sm:text-sm px-2 py-1 rounded-full">
           {jobs.length}
         </span>
       </div>
@@ -81,7 +81,7 @@ function StageColumn({ stage, jobs }) {
         items={jobs.map((job) => job._id)}
         strategy={verticalListSortingStrategy}
       >
-        <div className="space-y-3 min-h-[200px]">
+        <div className="space-y-2 sm:space-y-3 min-h-[200px]">
           {jobs.map((job) => (
             <JobCard key={job._id} job={job} />
           ))}
@@ -205,10 +205,10 @@ export default function PipelinePage() {
   return (
     <div className="flex bg-gray-50 min-h-screen">
       <Sidebar />
-      <div className="flex-1 p-8 overflow-x-auto">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Pipeline</h1>
-          <p className="text-gray-600 mt-2">
+      <div className="flex-1 p-4 sm:p-6 lg:p-8 overflow-x-auto">
+        <div className="mb-6 sm:mb-8 mt-16 lg:mt-0">
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Pipeline</h1>
+          <p className="text-gray-600 mt-2 text-sm sm:text-base">
             Drag and drop jobs between stages to update their status
           </p>
         </div>
@@ -220,7 +220,7 @@ export default function PipelinePage() {
           onDragEnd={handleDragEnd}
           onDragOver={handleDragOver}
         >
-          <div className="flex gap-4 pb-8">
+          <div className="flex gap-3 sm:gap-4 pb-8 min-w-max">
             <SortableContext items={stages.map((s) => s._id)}>
               {stages.map((stage) => {
                 const stageJobs = jobs.filter(
@@ -235,11 +235,11 @@ export default function PipelinePage() {
 
           <DragOverlay>
             {activeJob ? (
-              <div className="bg-white p-4 rounded-lg shadow-lg border-2 border-indigo-500">
-                <h3 className="font-semibold text-gray-900">
+              <div className="bg-white p-3 sm:p-4 rounded-lg shadow-lg border-2 border-indigo-500 w-[280px] sm:w-[300px]">
+                <h3 className="font-semibold text-gray-900 text-sm sm:text-base">
                   {activeJob.company}
                 </h3>
-                <p className="text-sm text-gray-600 mt-1">{activeJob.role}</p>
+                <p className="text-xs sm:text-sm text-gray-600 mt-1">{activeJob.role}</p>
               </div>
             ) : null}
           </DragOverlay>

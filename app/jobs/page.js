@@ -18,6 +18,7 @@ export default function JobsPage() {
     jobLink: '',
     contactName: '',
     contactEmail: '',
+    contactPhone: '',
     notes: '',
     salaryExpectation: '',
     location: '',
@@ -76,6 +77,7 @@ export default function JobsPage() {
           jobLink: '',
           contactName: '',
           contactEmail: '',
+          contactPhone: '',
           notes: '',
           salaryExpectation: '',
           location: '',
@@ -125,31 +127,31 @@ export default function JobsPage() {
   return (
     <div className="flex bg-gray-50 min-h-screen">
       <Sidebar />
-      <div className="flex-1 p-8">
+      <div className="flex-1 p-4 sm:p-6 lg:p-8 w-full">
         <div className="max-w-7xl mx-auto">
-          <div className="flex justify-between items-center mb-8">
-            <h1 className="text-3xl font-bold text-gray-900">Job Applications</h1>
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 sm:mb-8 mt-16 lg:mt-0">
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Job Applications</h1>
             <button
               onClick={() => setShowModal(true)}
-              className="bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 transition-colors"
+              className="w-full sm:w-auto bg-indigo-600 text-white px-4 sm:px-6 py-3 rounded-lg hover:bg-indigo-700 transition-colors text-sm sm:text-base"
             >
               + Add Job
             </button>
           </div>
 
-          <div className="bg-white rounded-xl shadow-sm p-6 mb-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="bg-white rounded-xl shadow-sm p-4 sm:p-6 mb-4 sm:mb-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
               <input
                 type="text"
                 placeholder="Search by company or role..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                className="px-3 sm:px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-sm sm:text-base"
               />
               <select
                 value={filterStage}
                 onChange={(e) => setFilterStage(e.target.value)}
-                className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                className="px-3 sm:px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-sm sm:text-base"
               >
                 <option value="">All Stages</option>
                 {stages.map((stage) => (
@@ -164,29 +166,29 @@ export default function JobsPage() {
           <div className="bg-white rounded-xl shadow-sm overflow-hidden">
             {filteredJobs.length === 0 ? (
               <div className="text-center py-12">
-                <p className="text-gray-500">No jobs found</p>
+                <p className="text-gray-500 text-sm sm:text-base">No jobs found</p>
               </div>
             ) : (
               <div className="overflow-x-auto">
-                <table className="w-full">
+                <table className="w-full min-w-[600px]">
                   <thead className="bg-gray-50">
                     <tr>
-                      <th className="text-left py-4 px-6 text-gray-600 font-medium">
+                      <th className="text-left py-3 sm:py-4 px-4 sm:px-6 text-gray-600 font-medium text-xs sm:text-sm">
                         Company
                       </th>
-                      <th className="text-left py-4 px-6 text-gray-600 font-medium">
+                      <th className="text-left py-3 sm:py-4 px-4 sm:px-6 text-gray-600 font-medium text-xs sm:text-sm">
                         Role
                       </th>
-                      <th className="text-left py-4 px-6 text-gray-600 font-medium">
+                      <th className="text-left py-3 sm:py-4 px-4 sm:px-6 text-gray-600 font-medium text-xs sm:text-sm hidden md:table-cell">
                         Location
                       </th>
-                      <th className="text-left py-4 px-6 text-gray-600 font-medium">
+                      <th className="text-left py-3 sm:py-4 px-4 sm:px-6 text-gray-600 font-medium text-xs sm:text-sm">
                         Stage
                       </th>
-                      <th className="text-left py-4 px-6 text-gray-600 font-medium">
+                      <th className="text-left py-3 sm:py-4 px-4 sm:px-6 text-gray-600 font-medium text-xs sm:text-sm hidden sm:table-cell">
                         Applied
                       </th>
-                      <th className="text-left py-4 px-6 text-gray-600 font-medium">
+                      <th className="text-left py-3 sm:py-4 px-4 sm:px-6 text-gray-600 font-medium text-xs sm:text-sm">
                         Actions
                       </th>
                     </tr>
@@ -194,24 +196,24 @@ export default function JobsPage() {
                   <tbody>
                     {filteredJobs.map((job) => (
                       <tr key={job._id} className="border-t hover:bg-gray-50">
-                        <td className="py-4 px-6 font-medium">{job.company}</td>
-                        <td className="py-4 px-6">{job.role}</td>
-                        <td className="py-4 px-6 text-gray-600">
+                        <td className="py-3 sm:py-4 px-4 sm:px-6 font-medium text-sm">{job.company}</td>
+                        <td className="py-3 sm:py-4 px-4 sm:px-6 text-sm">{job.role}</td>
+                        <td className="py-3 sm:py-4 px-4 sm:px-6 text-gray-600 text-sm hidden md:table-cell">
                           {job.location || '-'}
                         </td>
-                        <td className="py-4 px-6">
+                        <td className="py-3 sm:py-4 px-4 sm:px-6">
                           <span
-                            className="px-3 py-1 rounded-full text-sm text-white"
+                            className="px-2 sm:px-3 py-1 rounded-full text-xs text-white whitespace-nowrap"
                             style={{ backgroundColor: job.stageId.color }}
                           >
                             {job.stageId.name}
                           </span>
                         </td>
-                        <td className="py-4 px-6 text-gray-600">
+                        <td className="py-3 sm:py-4 px-4 sm:px-6 text-gray-600 text-xs sm:text-sm hidden sm:table-cell">
                           {format(new Date(job.appliedDate), 'MMM d, yyyy')}
                         </td>
-                        <td className="py-4 px-6">
-                          <div className="flex gap-2">
+                        <td className="py-3 sm:py-4 px-4 sm:px-6">
+                          <div className="flex gap-2 text-xs sm:text-sm">
                             <Link
                               href={`/jobs/${job._id}`}
                               className="text-indigo-600 hover:text-indigo-800"
@@ -237,9 +239,9 @@ export default function JobsPage() {
       </div>
 
       {showModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6">
-            <h2 className="text-2xl font-bold mb-6">Add New Job</h2>
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 overflow-y-auto">
+          <div className="bg-white rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-4 sm:p-6 my-8">
+            <h2 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6">Add New Job</h2>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div>
@@ -313,6 +315,21 @@ export default function JobsPage() {
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
                   />
                 </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Contact Phone
+                </label>
+                <input
+                  type="tel"
+                  value={formData.contactPhone}
+                  onChange={(e) =>
+                    setFormData({ ...formData, contactPhone: e.target.value })
+                  }
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
+                  placeholder="+1 (555) 123-4567"
+                />
               </div>
 
               <div className="grid grid-cols-2 gap-4">

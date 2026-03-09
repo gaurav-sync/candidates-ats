@@ -197,6 +197,18 @@ export default function JobDetailPage() {
                 <p className="font-medium">{job.contactEmail || 'Not specified'}</p>
               </div>
               <div>
+                <p className="text-sm text-gray-600">Contact Phone</p>
+                <p className="font-medium">
+                  {job.contactPhone ? (
+                    <a href={`tel:${job.contactPhone}`} className="text-indigo-600 hover:underline">
+                      {job.contactPhone}
+                    </a>
+                  ) : (
+                    'Not specified'
+                  )}
+                </p>
+              </div>
+              <div>
                 <p className="text-sm text-gray-600">Applied Date</p>
                 <p className="font-medium">
                   {format(new Date(job.appliedDate), 'MMM d, yyyy')}

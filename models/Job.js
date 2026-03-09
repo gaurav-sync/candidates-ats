@@ -31,6 +31,7 @@ const JobSchema = new mongoose.Schema({
   jobLink: String,
   contactName: String,
   contactEmail: String,
+  contactPhone: String,
   notes: String,
   salaryExpectation: String,
   location: String,
