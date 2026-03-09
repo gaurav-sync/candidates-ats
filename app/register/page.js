@@ -29,6 +29,8 @@ export default function RegisterPage() {
     setLoading(true);
 
     try {
+      console.log('Attempting registration for:', email);
+      
       const res = await fetch('/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -36,14 +38,17 @@ export default function RegisterPage() {
       });
 
       const data = await res.json();
+      console.log('Registration response:', data);
 
       if (!res.ok) {
         throw new Error(data.error || 'Registration failed');
       }
 
+      console.log('Registration successful, redirecting to OTP verification');
       localStorage.setItem('pendingEmail', email);
       router.push('/verify-otp');
     } catch (err) {
+      console.error('Registration error:', err);
       setError(err.message);
     } finally {
       setLoading(false);

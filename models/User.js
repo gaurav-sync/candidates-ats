@@ -22,6 +22,10 @@ const UserSchema = new mongoose.Schema({
   otpExpiry: {
     type: Date,
   },
+  isPending: {
+    type: Boolean,
+    default: false,
+  },
   createdAt: {
     type: Date,
     default: Date.now,

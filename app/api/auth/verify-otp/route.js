@@ -46,7 +46,9 @@ export async function POST(request) {
       );
     }
 
+    // Activate the account by setting verified to true and isPending to false
     user.verified = true;
+    user.isPending = false;
     user.otp = undefined;
     user.otpExpiry = undefined;
     await user.save();

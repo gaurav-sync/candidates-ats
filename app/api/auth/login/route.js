@@ -24,6 +24,14 @@ export async function POST(request) {
       );
     }
 
+    // Check if account is still pending verification
+    if (user.isPending) {
+      return NextResponse.json(
+        { error: 'Please verify your email first. Check your inbox for the OTP.' },
+        { status: 401 }
+      );
+    }
+
     if (!user.verified) {
       return NextResponse.json(
         { error: 'Please verify your email first' },
